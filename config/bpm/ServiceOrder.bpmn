@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="com.aliang.test.serviceOrder">
+  <process id="serviceOrder" name="服务单" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="pd" name="派单"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="pd"></sequenceFlow>
+    <exclusiveGateway id="checkOrderType" name="检查订单类型"></exclusiveGateway>
+    <sequenceFlow id="flow2" sourceRef="pd" targetRef="checkOrderType"></sequenceFlow>
+    <userTask id="install" name="安装"></userTask>
+    <sequenceFlow id="flow3" sourceRef="checkOrderType" targetRef="install">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${orderType=="上门安装" || orderType=="补件安装"}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="wlth" name="物流提货"></userTask>
+    <sequenceFlow id="flow4" sourceRef="checkOrderType" targetRef="wlth">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${orderType=="配送"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="install" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="wlth" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_serviceOrder">
+    <bpmndi:BPMNPlane bpmnElement="serviceOrder" id="BPMNPlane_serviceOrder">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="196.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="820.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="pd" id="BPMNShape_pd">
+        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="186.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkOrderType" id="BPMNShape_checkOrderType">
+        <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="193.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="install" id="BPMNShape_install">
+        <omgdc:Bounds height="55.0" width="105.0" x="550.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="wlth" id="BPMNShape_wlth">
+        <omgdc:Bounds height="55.0" width="105.0" x="550.0" y="240.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="175.0" y="213.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="213.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="325.0" y="213.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="213.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="440.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="602.0" y="115.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="460.0" y="213.0"></omgdi:waypoint>
+        <omgdi:waypoint x="602.0" y="240.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="602.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="837.0" y="180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="602.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="837.0" y="215.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

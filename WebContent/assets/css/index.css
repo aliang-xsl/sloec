@@ -1,0 +1,29 @@
+@CHARSET "UTF-8";
+
+a {
+	font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Segoe UI",
+		"Microsoft Yahei", Tahoma, Arial, STHeiti, sans-serif;
+}
+
+.logo {
+	position: relative;
+	margin-top: 5px;
+}
+
+.logo a {
+	font-size: 24px;
+	color: #d9230f;
+}
+
+.logo a:HOVER {
+	/*color: #0cd2ef;*/
+	color: #d9230f;
+	text-decoration: none;
+}
+
+.divider-vertical {
+	height: 40px;
+	margin: 0 9px;
+	border-right: 1px solid #ffffff;
+	border-left: 1px solid #f2f2f2;
+}

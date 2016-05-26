@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<link rel="stylesheet" type="text/css" href="assets/lib/easyui/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="assets/lib/easyui/themes/icon.css">   
+<script type="text/javascript" src="assets/lib/jquery/jquery-1.8.3.min.js"></script>   
+<script type="text/javascript" src="assets/lib/easyui/jquery.easyui.min.js"></script> 
+ 
+</head>
+<body class="easyui-layout">
+
+    <div data-options="region:'north'" style="height:40px;"></div> 
+    <div data-options="region:'west',title:'菜单导航',split:true" style="width:200px;">
+    	<div id="dayu_index_menu_container" class="easyui-accordion" ></div>  
+    </div>   
+    <div data-options="region:'center'">
+			<div id="dayu_index_tabs" class="easyui-tabs" fit='true'>   
+			    <div id='dayu_index_tabs_index' title="平台首页"   data-options="iconCls:'icon-home'">   
+			   		阿良出品，必属精品
+			    </div>   
+			</div>  
+    </div>   
+ <div data-options="region:'south'" style="height:38px;"></div>   
+
+
+<script type="text/javascript">
+
+	$(function(){
+		dayu.initView();
+	});
+	
+	
+
+	var dayu={
+			initView:null,
+			initMenu:null,
+			addTab:null
+	};
+	
+	
+	dayu.initView=function(){
+		$.ajax({
+			  url: "/test/testMenu.do",
+			  success: function(data) {
+				  dayu.initMenu(eval(data));
+			}
+		}); 
+	}
+	
+	dayu.initMenu=function(data){
+		var indexMenu=$('#dayu_index_menu_container').accordion({ 
+			animate:false ,
+			fit:true
+		});	
+		
+		for(var i=0;i<data.length;i++){
+			
+			var dayu_index_menu='<ul class=\"easyui-tree dayu_index_menu\">';
+			
+			for(var j=0;j<data[i].children.length;j++){
+				dayu_index_menu=dayu_index_menu+( 
+							"<li iconCls=\"icon-double\" id=\"dayu_index_menu_"+data[i].children[j].id+"\" data-options=\"attributes:{'url':'"+data[i].children[j].url+"'}\"> "+  
+					       	" <span  >"+data[i].children[j].text+"</span> "+  
+						    "</li>");
+			}
+			dayu_index_menu+="</ul>";
+			
+			$('#dayu_index_menu_container').accordion('add', {
+				title: data[i].text,
+				content: dayu_index_menu,
+				iconCls:'icon-application',
+				selected: i==0?true:false
+			});
+		}
+		
+		$('.dayu_index_menu').tree({
+		  	onClick: function(node){
+		  		dayu.addTab({
+		  			id:node.id,
+		  			title:node.text,
+		  			url:node.attributes.url,
+		  			isReload:false
+		  		});
+		  	}
+		});
+		
+	}
+
+	dayu.addTab=function(obj){
+		
+		var tabs=$('#dayu_index_tabs').tabs('tabs');
+		var tabIndex=false;
+		for(var i=0;i<tabs.length;i++){
+			if(tabs[i][0].id==obj.id){
+				tabIndex=i;
+			}
+		}
+		
+		if(!tabIndex){
+			 $('#dayu_index_tabs').tabs('add',{
+				  	id:obj.id,
+				  	iconCls:'icon-cascade',
+				    title:obj.title, 
+				    href:obj.url,
+				    closable:true
+			}); 
+		}else{
+			$('#dayu_index_tabs').tabs('select',tabIndex);
+			if(obj.isReload){
+				var tab = $('#dayu_index_tabs').tabs('getSelected');  
+				$('#dayu_index_tabs').tabs('update', {
+					tab: tab,
+					options: {
+						  title:obj.title, 
+						  href:obj.url
+					}
+				});
+			}
+		}
+	}
+	
+</script>
+
+</body>
+</html>
